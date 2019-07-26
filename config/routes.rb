@@ -5,6 +5,9 @@ Rails.application.routes.draw do
         get :search
         get :list
       end
+      resource :authentications do
+        post :authenticate
+      end
     end
   end
 end

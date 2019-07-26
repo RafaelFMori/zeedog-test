@@ -9,11 +9,11 @@ module Api
 
           op.failure :validate_contract do |failure|
             contract = Repositories::ListContract.new.(params)
-            render json: {code: 400, status: "Bad request", error: contract.errors}, status: 400
+            render json: {code: 400, status: Message.bad_request, error: contract.errors}, status: 400
           end
 
           op.failure :list do |failure|
-            render json: {code: 500, status: "Internal error", error: failure}, status: 500
+            render json: {code: 500, status: Message.internal_error, error: failure}, status: 500
           end
         end
       end
@@ -26,11 +26,11 @@ module Api
 
           op.failure :validate_contract do |failure|
             contract = Repositories::SearchContract.new.(params)
-            render json: {code: 400, status: "Bad request", error: contract.errors}, status: 400
+            render json: {code: 400, status: Message.bad_request, error: contract.errors}, status: 400
           end
 
           op.failure :search do |failure|
-            render json: {code: 500, status: "Internal error", error: failure}, status: 500
+            render json: {code: 500, status: Message.internal_error, error: failure}, status: 500
           end
         end
       end

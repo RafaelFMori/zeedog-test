@@ -3,23 +3,21 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.3'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
-# Use sqlite3 as the database for Active Record
 gem 'sqlite3', '1.4.1'
-# Use Puma as the app server
 gem 'puma', '~> 3.11'
-# dry-rb gems
 gem 'dry-validation', '1.2.1'
 gem 'dry-transaction', '0.13.0'
-#handle HTTP requests
 gem 'typhoeus', '1.3.1'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
+gem 'bcrypt', '~> 3.1.7'
+gem 'jwt', '2.2.1'
 
 group :test do
-  gem 'database_cleaner', '1.7.0'
+  gem 'factory_bot_rails', '~> 4.0'
+  gem 'shoulda-matchers', '~> 3.1'
+  gem 'faker'
+  gem 'database_cleaner'
 end
 
 group :development, :test do
