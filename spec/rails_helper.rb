@@ -1,4 +1,5 @@
 #simplecov start and ignored directories
+require 'simplecov'
 SimpleCov.start 'rails' do
   add_filter "app/mailers"
   add_filter "app/channels"
