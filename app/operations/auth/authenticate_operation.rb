@@ -16,7 +16,11 @@ module Auth
     def authenticate(context)
       contract = context[:contract]
       auth_token = context[:authenticator].new.(contract[:email], contract[:password])
-      Success(auth_token: auth_token)
+      if auth_token
+        Success(auth_token: auth_token)
+      else
+        Failure(:unauthorized)
+      end
     end
   end
 end

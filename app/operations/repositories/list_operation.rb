@@ -1,25 +1,23 @@
 module Repositories
-  class ListOperation
-    include Dry::Transaction
+  class ListOperation < Operation
+    DEFAULT_PAGE_VALUE = 1
+    DEFAULT_PER_PAGE_VALUE = 30
+    DEFAULT_TYPE = 'public'
 
     step :validate_contract
-    step :build_query_parameters
+    step :build_request_params
     step :list
     step :result
 
-    def validate_contract(context)
-      if context[:contract].success?
-        Success(context)
-      else
-        Failure(:invalid_contract)
-      end
-    end
+    def build_request_params(context)
+      contract = context[:contract]
+      contract.values[:type] = DEFAULT_TYPE if !contract.key?(:type)
+      contract.values[:page] = DEFAULT_PAGE_VALUE if !contract.key?(:page)
+      contract.values[:per_page] = DEFAULT_PER_PAGE_VALUE if !contract.key?(:per_page)
 
-    def build_query_parameters(context)
-      query_string = "is:#{context[:contract][:type]}"
-      context[:query_parameters] = {q: query_string}
-      context[:query_parameters][:page] = context[:contract][:page]
-      context[:query_parameters][:per_page] = context[:contract][:per_page]
+      context[:query_parameters] = {q: "is:#{contract[:type]}"}
+      context[:query_parameters][:page] = contract[:page]
+      context[:query_parameters][:per_page] = contract[:per_page]
       Success(context)
     end
 
@@ -28,10 +26,13 @@ module Repositories
         base_url: 'https://api.github.com/search/repositories?',
         params: context[:query_parameters])
 
-      if request.response.code == 200
-        response_body = JSON.parse(request.response.body)
+      response_body = JSON.parse(request.response.body)
+
+      if response_body['items'].present?
         context[:repositories] = response_body['items']
         Success(context)
+      else
+        Failure(:not_found)
       end
     end
 
@@ -43,7 +44,7 @@ module Repositories
             name: repository['full_name'],
             description: repository['description'],
             stars: repository['stargazers_count'],
-            forks:repository['forks_count'],
+            forks: repository['forks_count'],
             author:repository['owner']['login']
         }
       end

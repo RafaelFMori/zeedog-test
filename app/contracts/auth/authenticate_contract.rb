@@ -8,7 +8,7 @@ module Auth
     end
 
     rule(:email) do
-      key.failure('must be a valid email') if !VALID_EMAIL_REGEX.match(value)
+      key.failure("must be a valid email - #{Message.info}") if !VALID_EMAIL_REGEX.match(value)
     end
   end
 end

@@ -1,14 +1,14 @@
 class Message
   def self.not_found(record = 'record')
-    "Sorry, #{record} not found."
+    "Sorry, no #{record} was found."
   end
 
-  def self.internal_error
+  def self.unknown_error
     "Sorry something went wrong"
   end
 
   def self.bad_request
-    'Bad request'
+    "Bad request - #{info}"
   end
 
   def self.invalid_credentials
@@ -37,5 +37,9 @@ class Message
 
   def self.expired_token
     'Sorry, your token has expired. Please login to continue.'
+  end
+
+  def self.info(info_url = 'https://github.com/RafaelFMori/zeedog-test')
+    "For more info visit: #{info_url} and read the api session of the readme doc"
   end
 end

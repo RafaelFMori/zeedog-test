@@ -13,7 +13,7 @@ module Api
           end
 
           op.failure :authenticate do |failure|
-            render json: {code: 500, status: Message.internal_error, error: failure}, status: 500
+            render json: {code: 401, status: Message.unauthorized, error: failure}, status: 401
           end
         end
       end

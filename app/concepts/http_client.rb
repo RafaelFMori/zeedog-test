@@ -1,13 +1,9 @@
 class HttpClient
-  def initialize()
-    @hydra = Typhoeus::Hydra.hydra
-  end
 
   def get(base_url:, params:)
     request_url = build_get_url(base_url, params)
     request = Typhoeus::Request.new(request_url)
-    @hydra.queue(request)
-    @hydra.run
+    request.run
     request
   end
 
