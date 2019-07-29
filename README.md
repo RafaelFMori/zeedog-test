@@ -1,10 +1,10 @@
--- Details --
+##Details
 
 - system dependencies(Ruby 2.6.3, Rails 5.2.3, Git)
 - No especial configuration is required
 - No rakes or independent services were added
 
--- Setup --
+##Setup
 
 - Clone this repository to your machine using a git interface
 - On your terminal go to your new zeedog-test directory.
@@ -17,11 +17,11 @@
 - to run tests: "rspec spec" or just "rspec"(shipped with simplecov)
   OBS: This application local setup was not tested on Windows or MacOS environments
 
--- Endpoints and Parameters --
+##Endpoints and Parameters
 
-  -api/v1/repositories/search(GET) - responsible for complex repos search
+  **-api/v1/repositories/search(GET) - responsible for complex repos search**
 
-    accepted params:
+    **accepted params:**
     language - string - *
     username - string - *
     label - string - *
@@ -32,9 +32,9 @@
     * at least one of these parameters must be present
       (reasoning on the considerations session of this document)
 
-    Endpoint URL example: localhost:3000/api/v1/repositories/search?language=ruby&username=Jekyll&label=ruby&page=1&per_page=30&sort=stars&order=desc
+    **Endpoint URL example:** localhost:3000/api/v1/repositories/search?language=ruby&username=Jekyll&label=ruby&page=1&per_page=30&sort=stars&order=desc
 
-    specifics:
+    **specifics:**
       - Language, username and label can be used together or separated using them
        together will take every one of the values into consideration to make the search.
 
@@ -44,16 +44,16 @@
       - Label will perform a text search on repositories readme, name and description
 
 
-  -api/v1/repositories/list(GET) - responsible for listing public and private repos
+  **-api/v1/repositories/list(GET) - responsible for listing public and private repos**
 
-    accepted params:
+    **accepted params:**
     type - string - optional(default to 'public')
     page - integer - optional(default to 1)
     per_page - integer - optional(default to 30)
 
-    Endpoint URL example: localhost:3000/api/v1/repositories/list?type=private&page=1&per_page=5
+    **Endpoint URL example:** localhost:3000/api/v1/repositories/list?type=private&page=1&per_page=5
 
-    specifics:
+    **specifics:**
       - This endpoint can be called with no parameter in which case it will answer
       with a list of public repositories(paginated by default - see accepted params)
 
@@ -63,17 +63,17 @@
       delete the delete option on the TYPE_VALUES constant on list controller and
       delete/comment the related tests for it to search only for public results).
 
-  -api/v1/authentication/authenticate(POST) - responsible for authenticating a user(JWT)
+  **-api/v1/authentication/authenticate(POST) - responsible for authenticating a user(JWT)**
 
-    accepted params:
+    **accepted params:**
     email - string - required
     password - string - required
 
-    Endpoint URL example: localhost:3000/api/v1/authentications/authenticate
-    params: email=jhondoe@gmail.com, password=swordfish(digested)
+    **Endpoint URL example:** localhost:3000/api/v1/authentications/authenticate
+    **params:** email=jhondoe@gmail.com, password=swordfish(digested)
 
 
--- CONSIDERATIONS --
+##Considerations
 
 "required optional" parameters on SearchContract.
 
@@ -111,14 +111,14 @@
   decide how we would address this problems on the present and future
 
 
-ApplicationController params
+#ApplicationController params
 
   Since dry-validation doesn't accept rails params to use, and later the code
   would not accept unpermitted params, I created this little method to accept and parse
   the params, to be clear I'm not kin with this approach for it's automagical attributes
   but on this case I don't think is a problem.
 
-Validate_contract method
+#Validate_contract method
 
   Since all operations are using the same implementation I decided to extract it
   into the Operation class.
@@ -133,13 +133,13 @@ Validate_contract method
 
   the duplication on the 400 is not the best idea either, but it made easier to read
 
-Default values
+#Default values
 
   I opted for creating and enforcing default values for parameters on the operation layer
   but I'm not entirely sure that this is the best approach, I don't feel that the Contract
   layer is the best option too.
 
-Message class
+#Message class
 
   Message serves the utility of managing application messages, on this test
   I have used it mostly to manage messages that were used more than once.
@@ -149,7 +149,7 @@ Concepts
   to be (on app dir because of the autoload) I thought of calling it libs, entities and etc...
   but none of this names exemplified whats I wanted, for the time being this will be the name of this directory.
 
-Separation of List and Search Endpoints
+#Separation of List and Search Endpoints
 
   Even though both of this endpoints utilize the same github API mechanism(repo search)
   I choose to separate them for some reasons, being them:
@@ -165,12 +165,12 @@ Separation of List and Search Endpoints
    - Spec hell
 
 
-  ONGOING --
+  ##ONGOING --
 
   Finish JWT authentication implementation
   Mock github requests on tests
 
-  maybe:
+  **maybe:**
 
   usage of a json serializer
   stop using the few factories present in this project
