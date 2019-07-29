@@ -1,18 +1,15 @@
 class AuthorizeApiRequest
-  def initialize(headers = {})
-    @headers = headers
-  end
 
-  def call
-    { user: user }
+  def call(headers = {})
+    auth_token = http_auth_header(headers)
+    decoded_token = decoded_auth_token(auth_token)
+    authorize(decoded_token)
   end
 
   private
 
-  attr_reader :headers
-
-  def user
-    @user ||= User.find(decoded_auth_token[:user_id]) if decoded_auth_token
+  def authorize(decoded_auth_token)
+    User.find_by!(id: decoded_auth_token[:user_id])
   rescue ActiveRecord::RecordNotFound => e
     raise(
       ExceptionHandler::InvalidToken,
@@ -20,11 +17,11 @@ class AuthorizeApiRequest
     )
   end
 
-  def decoded_auth_token
-    @decoded_auth_token ||= JsonWebToken.decode(http_auth_header)
+  def decoded_auth_token(auth_token)
+    JsonWebToken.decode(auth_token)
   end
 
-  def http_auth_header
+  def http_auth_header(headers)
     if headers['Authorization'].present?
       return headers['Authorization'].split(' ').last
     end

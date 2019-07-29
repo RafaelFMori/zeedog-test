@@ -1,6 +1,8 @@
 module Api
   module V1
     class AuthenticationsController < ApplicationController
+      skip_before_action :authenticate_request
+
       def authenticate
         Auth::AuthenticateOperation.new.(auth_dependencies) do |op|
           op.success do |context|
