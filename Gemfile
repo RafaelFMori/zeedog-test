@@ -5,7 +5,7 @@ ruby '2.6.3'
 
 gem 'rails', '~> 5.2.3'
 gem 'sqlite3', '1.4.1'
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 3.12'
 gem 'dry-validation', '1.2.1'
 gem 'dry-transaction', '0.13.0'
 gem 'typhoeus', '1.3.1'
